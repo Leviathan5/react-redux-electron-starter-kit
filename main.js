@@ -3,18 +3,49 @@ const electron = require('electron')
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
+const nativeImage = electron.nativeImage
+const appIcon = nativeImage.createFromPath('./app_build/icon.ico')
 
 if (process.env.NODE_ENV === 'development') {
   require('babel-register')
 }
 require('babel-polyfill')
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({
+    icon: appIcon,
+    title: 'react-redux-electron-starter-kit',
+    width: 800,
+    height: 600,
+    // The following options are not required and are set to their default values.
+    minWidth: 0,
+    minHeight: 0,
+    //maxWidth: 1000,
+    //maxHeight: 700,
+    resizable: true,
+    movable: true,
+    minimizable: true,
+    maximizable: true,
+    closable: true,
+    alwaysOnTop: false,
+    fullscreen: false,
+    fullscreenable: true,
+    skipTaskbar: false,
+    show: true,
+    frame: true,
+    transparent: false,
+    autoHideMenuBar: false,
+    webPreferences: {
+        nodeIntegration: true,
+        zoomFactor: 1.0,
+        javascript: true
+    }
+  })
 
   // and load the index.html of the app.
   process.env.NODE_ENV === 'development' ? mainWindow.loadURL(`file://${__dirname}/src/index.html`)
@@ -31,6 +62,18 @@ function createWindow () {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null
+  })
+
+  // Emitted when the window is loaded and ready to be shown.
+  mainWindow.on('ready-to-show', function () {
+    mainWindow.show()
+  })
+
+  // Emitted when the window is going to navigate.
+  mainWindow.webContents.on('will-navigate', ev => {
+    // This is most commonly used to stop the navigation when a user drags a file
+    // into the window that is viewable. (eg. mp3, txt, html, css, js)
+    ev.preventDefault()
   })
 }
 

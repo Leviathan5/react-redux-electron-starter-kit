@@ -112,8 +112,10 @@
       }
     },
     "start-app-hot": {
-      "command": "HOT=1 NODE_ENV=development electron .",
+      "command": "electron .",
       "env": {
+        "HOT": true,
+        "NODE_ENV": "development",
         "DEBUG": "app:*"
       }
     },
@@ -131,6 +133,10 @@
   },
   "author": "Donovan Crewe <donnycrash@gmail.com>",
   "contributors": [
+    {
+      "name": "Derek Jensen",
+      "email": "derek@pewf.co"
+    },
     {
       "name": "David Zukowski",
       "email": "david@zuko.me"
